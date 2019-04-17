@@ -1,41 +1,67 @@
 class ReactivityFramework {
+  $data = {}
+  $computed = {}
+  $actions = {}
+
   constructor({ data = {}, computed = {}, onUpdate = null }) {
-    this.$data = data
+    this.$actions = { onUpdate }
+    const validator = base => ({
+      get(obj, key) {
+        if (typeof obj[key] === 'object' && obj[key] !== null) {
+          return new Proxy(obj[key], validator(base))
+        } else {
+          return Reflect.get(obj, key)
+        }
+      },
+      set(obj, key, val) {
+        obj[key] = val
+        if (typeof base.$actions.onUpdate === 'function') {
+          base.$actions.onUpdate.bind(prox)(base)
+        }
+        return Reflect.set(obj, key, val)
+      },
+    })
+
+    this.$data = new Proxy(data, validator(this))
     this.$computed = computed
 
-    let _self = this
-
-    let prox = new Proxy(_self, {
+    let prox = new Proxy(this, {
       get(obj, key) {
-        if (Object.keys(_self.$computed).includes(key)) {
-          return _self.$computed[key].bind(prox)();
-        } else if (Object.keys(_self.$data).includes(key)) {
-          return Reflect.get(_self.$data, key)
+        if (Object.keys(obj.$computed).includes(key)) {
+          return obj.$computed[key].bind(prox)()
+        } else if (Object.keys(obj.$data).includes(key)) {
+          return Reflect.get(obj.$data, key)
+        } else {
+          return Reflect.get(obj, key)
         }
-
-        return Reflect.get(obj, key)
       },
       set(obj, key, val) {
         // disallow update on computed properties
-        if (Object.keys(_self.$computed).includes(key)) {
-          return true // Reflect.set(_self.computed, key, val);
-        } else if (Object.keys(_self.$data).includes(key)) {
-          let updated = Reflect.set(_self.$data, key, val)
-          if (typeof onUpdate === 'function') {
-            onUpdate.bind(prox)(_self)
+        if (Object.keys(obj.$computed).includes(key)) {
+          return true // Reflect.set(_self.computed, key, val)
+        } else if (Object.keys(obj.$data).includes(key)) {
+          let updated = Reflect.set(obj.$data, key, val)
+          if (typeof obj.$actions.onUpdate === 'function') {
+            obj.$actions.onUpdate.bind(prox)(obj)
           }
 
-          return updated;
+          return updated
+        }
+        let updated = Reflect.set(obj.$data, key, val)
+        if (typeof obj.$actions.onUpdate === 'function') {
+          obj.$actions.onUpdate.bind(prox)(obj)
         }
 
-        return Reflect.set(obj, key, val)
-      }
+        return updated
+      },
     })
-    if (typeof onUpdate === 'function') {
-      onUpdate.bind(prox)(_self)
+
+    // call once for initial render
+    if (typeof this.$actions.onUpdate === 'function') {
+      this.$actions.onUpdate.bind(prox)(this)
     }
     return prox
   }
 }
 
-export const Reactivity = ReactivityFramework;
+export const Reactivity = ReactivityFramework
