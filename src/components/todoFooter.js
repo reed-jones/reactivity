@@ -3,16 +3,12 @@ import { classes, pluralize } from '~/utils'
 
 import state from '~/state'
 
+const isVisible = filter => {
+  return state.visibility === filter
+}
+
 //bottom row filter buttons
 const filterItem = (filter, label) => {
-  const setVisible = filter => event => {
-    state.visibility = filter
-  }
-
-  const isVisible = filter => {
-    return state.visibility === filter
-  }
-
   return html`
     <li>
       <a
@@ -24,12 +20,12 @@ const filterItem = (filter, label) => {
   `
 }
 
+const removeCompleted = event => {
+  state.todos = state.todos.filter(todo => !todo.completed)
+}
+
 // clear completed button
 const clearBtn = _ => {
-  const removeCompleted = event => {
-    state.todos = state.todos.filter(todo => !todo.completed)
-  }
-
   if (state.todos.length > state.remaining) {
     return html`
       <button class="clear-completed" @click="${removeCompleted}">
