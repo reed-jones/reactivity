@@ -1,8 +1,7 @@
 import { html } from 'lit-html'
 import { ENTER_KEY, ESC_KEY } from '~/keyCodes'
 import { classes } from '~/utils'
-import state from '~/app'
-
+import state from '~/state'
 
 const removeTodo = todo => event => {
   state.todos = state.todos.filter(t => t.id !== todo.id)
@@ -43,7 +42,6 @@ const editKeydown = todo => event => {
 }
 
 export const todoItem = todo => {
-
   return html`
     <li
       class="todo ${classes({

@@ -1,6 +1,5 @@
 class ReactionFramework {
   constructor({ data = {}, computed = {}, onUpdate = null }) {
-    this.$actions = { onUpdate }
     const validator = base => ({
       get(obj, key) {
         if (typeof obj[key] === 'object' && obj[key] !== null) {
@@ -20,6 +19,7 @@ class ReactionFramework {
 
     this.$data = new Proxy(data, validator(this))
     this.$computed = computed
+    this.$actions = { onUpdate }
 
     let prox = new Proxy(this, {
       get(obj, key) {

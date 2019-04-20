@@ -1,6 +1,6 @@
 import { html } from 'lit-html'
 import { ENTER_KEY } from '~/keyCodes'
-import state from '~/app'
+import state from '~/state'
 
 const addTodo = _ => event => {
   if (event.keyCode !== ENTER_KEY) {

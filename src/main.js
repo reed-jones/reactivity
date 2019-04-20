@@ -8,8 +8,8 @@ import { html, render } from 'lit-html'
 
 import { todoApp } from './components/todoApp'
 import { pageFooter } from './components/pageFooter'
-
-import state from './app'
+import state from './state'
+import './router'
 
 // overall app structure
 export const myTemplate = _ => {

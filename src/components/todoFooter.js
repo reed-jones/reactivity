@@ -1,7 +1,7 @@
 import { html } from 'lit-html'
 import { classes, pluralize } from '~/utils'
 
-import state from '~/app'
+import state from '~/state'
 
 //bottom row filter buttons
 const filterItem = (filter, label) => {
@@ -17,7 +17,6 @@ const filterItem = (filter, label) => {
     <li>
       <a
         href="#/${filter}"
-        @click=${setVisible(filter)}
         class=${classes({ selected: isVisible(filter) })}
         >${label}</a
       >

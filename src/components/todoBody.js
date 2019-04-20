@@ -1,18 +1,18 @@
 import { html } from 'lit-html'
 import { todoItem } from './todoItem'
 
-import state from '~/app'
+import state from '~/state'
+
+const allDone = e => {
+  state.todos = state.todos.map(todo => ({
+    ...todo,
+    completed: e.target.checked,
+  }))
+}
 
 export const todoBody = _ => {
   if (!state.todos.length) {
     return ''
-  }
-
-  const allDone = e => {
-    state.todos = state.todos.map(todo => ({
-      ...todo,
-      completed: e.target.checked,
-    }))
   }
 
   return html`
