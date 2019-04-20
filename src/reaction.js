@@ -1,8 +1,4 @@
-class ReactivityFramework {
-  $data = {}
-  $computed = {}
-  $actions = {}
-
+class ReactionFramework {
   constructor({ data = {}, computed = {}, onUpdate = null }) {
     this.$actions = { onUpdate }
     const validator = base => ({
@@ -64,4 +60,4 @@ class ReactivityFramework {
   }
 }
 
-export const Reactivity = ReactivityFramework
+export const Reaction = ReactionFramework
