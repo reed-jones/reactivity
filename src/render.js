@@ -1,14 +1,21 @@
+// styles
+import 'todomvc-common/base.css'
+import 'todomvc-app-css/index.css'
+import './styles.css'
+
 // lit-html templates
-import { html, render as litRender } from 'lit-html'
+import { html, render } from 'lit-html'
 
 import { todoApp } from './components/todoApp'
 import { pageFooter } from './components/pageFooter'
 
+import state from './app'
+
 // overall app structure
-export const myTemplate = state => {
+export const myTemplate = _ => {
   return html`
     <section class="todoapp">
-      ${todoApp(state)}
+      ${todoApp()}
     </section>
     ${pageFooter()}
   `
@@ -16,6 +23,14 @@ export const myTemplate = state => {
 
 // the render function, passing the current state to
 // each component to re-render if needed
-export const render = state => {
-  litRender(myTemplate(state), document.body)
+state.$actions.onUpdate = _ => {
+  // lit-html render function
+  render(myTemplate(state), document.body)
+
+  // save important state so we can restore
+  localStorage.setItem('todo-reactive-todos', JSON.stringify(state.todos))
+  localStorage.setItem('todo-reactive-visibility', state.visibility)
 }
+
+// Force Initial Render
+state.$actions.onUpdate()

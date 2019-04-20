@@ -1,7 +1,9 @@
 import { html } from 'lit-html'
 import { todoItem } from './todoItem'
 
-export const todoBody = state => {
+import state from '~/app'
+
+export const todoBody = _ => {
   if (!state.todos.length) {
     return ''
   }
@@ -24,7 +26,7 @@ export const todoBody = state => {
       />
       <label for="toggle-all">Mark all as complete</label>
       <ul class="todo-list">
-        ${state.filteredTodos.map(todo => todoItem(state, todo))}
+        ${state.filteredTodos.map(todo => todoItem(todo))}
       </ul>
     </section>
   `

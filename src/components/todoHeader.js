@@ -1,7 +1,9 @@
 import { html } from 'lit-html'
+import { ENTER_KEY } from '~/keyCodes'
+import state from '~/app'
 
-const addTodo = state => event => {
-  if (event.keyCode !== 13) {
+const addTodo = _ => event => {
+  if (event.keyCode !== ENTER_KEY) {
     return
   }
   const value = state.newTodo && state.newTodo.trim()
@@ -17,7 +19,7 @@ const addTodo = state => event => {
   state.newTodo = ''
 }
 
-export const todoHeader = state => {
+export const todoHeader = _ => {
   return html`
     <header class="header">
       <h1>todos</h1>
@@ -28,7 +30,7 @@ export const todoHeader = state => {
         placeholder="What needs to be done?"
         .value="${state.newTodo}"
         @input="${e => (state.newTodo = e.target.value)}"
-        @keyup="${addTodo(state)}"
+        @keyup="${addTodo()}"
       />
     </header>
   `

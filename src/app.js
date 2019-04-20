@@ -1,13 +1,5 @@
-// styles
-import 'todomvc-common/base.css'
-import 'todomvc-app-css/index.css'
-import './styles.css'
-
 // plugins
 import { Reaction } from './reaction'
-
-// base template render function
-import { render } from './render'
 
 // import todo filters
 import { filters } from './utils'
@@ -38,15 +30,5 @@ export default new Reaction({
     remaining() {
       return filters.active(this.todos).length
     },
-  },
-
-  // calls every time a value changes
-  onUpdate() {
-    // re-render on data updates
-    render(this)
-
-    // store settings
-    localStorage.setItem('todo-reactive-todos', JSON.stringify(this.todos))
-    localStorage.setItem('todo-reactive-visibility', this.visibility)
   },
 })

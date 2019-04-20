@@ -1,8 +1,10 @@
 import { html } from 'lit-html'
-import { classes, pluralize } from '../utils'
+import { classes, pluralize } from '~/utils'
+
+import state from '~/app'
 
 //bottom row filter buttons
-const filterItem = (state, filter, label) => {
+const filterItem = (filter, label) => {
   const setVisible = filter => event => {
     state.visibility = filter
   }
@@ -24,7 +26,7 @@ const filterItem = (state, filter, label) => {
 }
 
 // clear completed button
-const clearBtn = state => {
+const clearBtn = _ => {
   const removeCompleted = event => {
     state.todos = state.todos.filter(todo => !todo.completed)
   }
@@ -39,7 +41,7 @@ const clearBtn = state => {
 }
 
 // app footer template
-export const todoFooter = state => {
+export const todoFooter = _ => {
   if (!state.todos.length) {
     return ''
   }
@@ -51,11 +53,11 @@ export const todoFooter = state => {
         ${pluralize('item', state.remaining)} left
       </span>
       <ul class="filters">
-        ${filterItem(state, 'all', 'All')}
-        ${filterItem(state, 'active', 'Active')}
-        ${filterItem(state, 'completed', 'Completed')}
+        ${filterItem('all', 'All')}
+        ${filterItem('active', 'Active')}
+        ${filterItem('completed', 'Completed')}
       </ul>
-      ${clearBtn(state)}
+      ${clearBtn()}
     </footer>
   `
 }

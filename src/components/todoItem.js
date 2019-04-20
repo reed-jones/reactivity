@@ -1,45 +1,48 @@
 import { html } from 'lit-html'
-import { ENTER_KEY, ESC_KEY } from '../keyCodes'
-import { classes } from '../utils'
+import { ENTER_KEY, ESC_KEY } from '~/keyCodes'
+import { classes } from '~/utils'
+import state from '~/app'
 
-export const todoItem = (state, todo, events) => {
+
+const removeTodo = todo => event => {
+  state.todos = state.todos.filter(t => t.id !== todo.id)
+}
+
+const editTodo = todo => event => {
+  state.beforeEditCache = todo.title
+  state.editedTodo = todo.id
+  const el = document.getElementById(`todo_input_${todo.id}`)
+  el.focus()
+  el.select()
+}
 
 
-  const removeTodo = todo => event => {
-    state.todos = state.todos.filter(t => t.id !== todo.id)
+const doneEdit = todo => event => {
+  if (!state.editedTodo && state.editedTodo !== 0) {
+    return
   }
 
-  const editTodo = todo => event => {
-    state.beforeEditCache = todo.title
-    state.editedTodo = todo.id
-    document.getElementById(`todo_input_${todo.id}`).focus()
+  state.editedTodo = null
+  todo.title = todo.title.trim()
+  if (!todo.title) {
+    removeTodo(todo)()
   }
+}
 
+const cancelEdit = todo => event => {
+  state.editedTodo = null
+  todo.title = state.beforeEditCache
+}
 
-  const doneEdit = todo => event => {
-    if (!state.editedTodo) {
-      return
-    }
-
-    state.editedTodo = null
-    todo.title = todo.title.trim()
-    if (!todo.title) {
-      removeTodo(todo)()
-    }
+const editKeydown = todo => event => {
+  if (event.keyCode === ENTER_KEY) {
+    doneEdit(todo)()
+  } else if (event.keyCode === ESC_KEY) {
+    cancelEdit(todo)()
   }
+}
 
-  const cancelEdit = todo => event => {
-    state.editedTodo = null
-    todo.title = state.beforeEditCache
-  }
-
-  const editKeydown = todo => event => {
-    if (event.keyCode === ENTER_KEY) {
-      doneEdit(todo)()
-    } else if (event.keyCode === ESC_KEY) {
-      cancelEdit(todo)()
-    }
-  }
+export const todoItem = todo => {
 
   return html`
     <li
