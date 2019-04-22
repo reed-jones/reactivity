@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Parcel Sandbox</title>
+    <title>Reactive lit-html TODOMVC PWA</title>
     <meta charset="UTF-8" />
   </head>
 
   <body>
     <script src="main.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/service-worker.js'); }
+    </script>
   </body>
 </html>

@@ -5,8 +5,8 @@
   "author": "Reed Jones <reedjones@reedjones.com>",
   "license": "ISC",
   "scripts": {
-    "dev": "parcel src/index.html --out-dir public",
     "build": "parcel build src/index.html --out-dir public ",
+    "dev": "parcel src/index.html --out-dir public",
     "start": "node index.js"
   },
   "dependencies": {
@@ -17,6 +17,7 @@
     "todomvc-common": "^1.0.5"
   },
   "devDependencies": {
-    "parcel-bundler": "^1.12.3"
+    "parcel-bundler": "^1.12.3",
+    "parcel-plugin-sw-precache": "^1.1.1"
   }
 }

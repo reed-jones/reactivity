@@ -6,6 +6,8 @@ import { todoFooter } from './todoFooter'
 
 export const todoApp = _ => {
   return html`
-    ${todoHeader()}${todoBody()}${todoFooter()}
+    <section class="todoapp">
+      ${todoHeader()}${todoBody()}${todoFooter()}
+    </section>
   `
 }

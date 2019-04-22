@@ -1,0 +1,1 @@
+// this file is generate by parcel-plugin-sw-precache

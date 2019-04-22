@@ -14,9 +14,7 @@ import './router'
 // overall app structure
 export const myTemplate = _ => {
   return html`
-    <section class="todoapp">
-      ${todoApp()}
-    </section>
+    ${todoApp()}
     ${pageFooter()}
   `
 }
